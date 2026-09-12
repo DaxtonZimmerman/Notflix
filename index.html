@@ -1,47 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth scroll-pt-24 motion-reduce:scroll-auto">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="NOTFLIX: questionable movies. Unquestionably good snacks. An original movie-parody class project.">
   <title>NOTFLIX — Seriously unserious cinema</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0b'/%3E%3Ctext x='12' y='49' font-family='Arial' font-weight='900' font-size='48' fill='%23e50914'%3EN%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=3">
-  <script src="js/script.js?v=2" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { "brand-red": "#e50914", "screen-black": "#0b0b0b", "panel-dark": "#181818" }, fontFamily: { display: ["Arial", "Helvetica", "sans-serif"] } } } };
+  </script>
+  <script src="js/script.js?v=4" defer></script>
 </head>
-<body class="bg-black text-white">
-  <a class="skip-link" href="#catalog">Skip to movies</a>
-  <header>
-    <a class="brand" href="#home" aria-label="NOTFLIX home">NOTFLIX</a>
-    <nav id="navigation" aria-label="Main navigation">
-      <a href="#home">Home</a><a href="#movies">Movies</a><a href="#shows">Shows</a><a href="#my-list">My List <span id="listCount">0</span></a>
+<body class="group bg-screen-black font-display text-white [&.modal-open]:overflow-hidden">
+  <a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black skip-link fixed -top-24 left-4 z-[100] bg-white p-3 text-black focus:top-2" href="#catalog">Skip to movies</a>
+  <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center gap-5 border-b border-white/10 bg-black/90 px-5 md:h-20 md:gap-8 md:px-8 lg:px-12">
+    <a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black brand text-3xl font-black tracking-tighter text-brand-red hover:text-red-400" href="#home" aria-label="NOTFLIX home">NOTFLIX</a>
+    <nav class="absolute inset-x-0 top-16 hidden flex-col gap-5 border-b border-white/20 bg-screen-black p-5 text-sm [&.open]:flex md:static md:flex md:flex-row md:border-0 md:bg-transparent md:p-0 [&>a]:text-gray-300 [&>a:hover]:text-white [&>a[aria-current]]:font-bold [&>a[aria-current]]:text-white" id="navigation" aria-label="Main navigation">
+      <a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black" href="#home">Home</a><a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black" href="#movies">Movies</a><a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black" href="#shows">Shows</a><a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black" href="#my-list">My List <span class="rounded-full bg-white/20 px-1.5 py-0.5 text-xs" id="listCount">0</span></a>
     </nav>
-    <button class="search-toggle" id="searchButton" aria-label="Search titles">⌕ <span>Search</span></button>
-    <span class="avatar" title="Local demo profile">D</span>
-    <button id="menuButton" class="menu-button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navigation">☰</button>
+    <button type="button" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black search-toggle ml-auto bg-transparent text-xl text-white hover:text-gray-300" id="searchButton" aria-label="Search titles">⌕ <span class="hidden text-sm md:inline">Search</span></button>
+    <span class="avatar hidden h-9 w-9 place-items-center rounded bg-brand-red font-bold md:grid" title="Local demo profile">D</span>
+    <button type="button" id="menuButton" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black menu-button bg-transparent text-2xl text-white hover:text-gray-300 md:hidden" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navigation">☰</button>
   </header>
   <main>
-    <section class="hero" id="hero" aria-labelledby="heroTitle">
-      <img src="images/banners/no-weigh-home.jpg" alt="An unprepared rooftop hero with a pizza and an extremely questionable escape plan" fetchpriority="high">
-      <div class="hero-content">
-        <p class="eyebrow">N <span>A NOTFLIX ORIGINAL</span></p>
-        <h1 id="heroTitle">NO WEIGH<br>HOME</h1>
-        <div class="metadata"><span class="match">98% snack approval</span><span>2026</span><span class="rating">PG-13ish</span><span>Action comedy</span></div>
-        <p class="hero-description">He saved the last slice. Now he has to save himself. One extremely unprepared hero swings into a multiverse of delivery fees.</p>
-        <div class="actions"><button class="button primary" data-preview="no-weigh-home">▶ Play preview</button><button class="button secondary" data-info="no-weigh-home">ⓘ More info</button></div>
-        <p class="hero-note">Big movies. Small budgets. Absolutely no Oscars.</p>
+    <section class="hero relative flex min-h-[650px] items-center overflow-hidden md:min-h-[710px] lg:min-h-[800px]" id="hero" aria-labelledby="heroTitle">
+      <img class="absolute inset-0 h-full w-full object-cover object-[63%_center] md:object-center" src="images/banners/no-weigh-home.jpg" alt="An unprepared rooftop hero with a pizza and an extremely questionable escape plan" fetchpriority="high">
+      <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent"></div><div class="absolute inset-0 bg-gradient-to-t from-screen-black via-transparent to-transparent"></div>
+      <div class="hero-content relative z-10 max-w-3xl px-5 pb-20 pt-40 md:px-8 lg:px-12">
+        <p class="eyebrow mb-3 text-xs font-extrabold uppercase tracking-[0.2em] text-brand-red">N <span>A NOTFLIX ORIGINAL</span></p>
+        <h1 class="mb-6 text-6xl font-black leading-none tracking-tighter md:text-7xl lg:text-8xl" id="heroTitle">NO WEIGH<br>HOME</h1>
+        <div class="metadata flex flex-wrap items-center gap-3 text-xs text-gray-300"><span class="match font-bold text-green-400">98% snack approval</span><span>2026</span><span class="rating border border-gray-500 px-1.5 py-0.5">PG-13ish</span><span>Action comedy</span></div>
+        <p class="hero-description my-6 max-w-lg text-base leading-relaxed text-gray-200 md:text-lg">He saved the last slice. Now he has to save himself. One extremely unprepared hero swings into a multiverse of delivery fees.</p>
+        <div class="actions my-6 flex flex-wrap gap-3"><button type="button" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black button inline-flex items-center justify-center gap-2 rounded px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 motion-reduce:transform-none primary bg-white text-black hover:bg-gray-200" data-preview="no-weigh-home">▶ Play preview</button><button type="button" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black button inline-flex items-center justify-center gap-2 rounded px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 motion-reduce:transform-none secondary bg-white/20 text-white hover:bg-white/30" data-info="no-weigh-home">ⓘ More info</button></div>
+        <p class="hero-note mt-5 text-xs text-gray-400">Big movies. Small budgets. Absolutely no Oscars.</p>
       </div>
     </section>
-    <section id="catalog" class="catalog" aria-label="Browse titles" tabindex="-1">
-      <div class="catalog-toolbar"><div><p class="eyebrow">YOUR NEXT BAD DECISION</p><h2 id="catalogTitle">Seriously unserious cinema.</h2></div><label class="genre-label">Genre <select id="genre"><option value="all">All genres</option><option>Action</option><option>Comedy</option><option>Adventure</option><option>Thriller</option><option>Animation</option></select></label></div>
-      <div id="searchPanel" class="search-panel" hidden><label for="searchInput">Find your next questionable favorite</label><div><input id="searchInput" type="search" placeholder="Search titles, genres, or snacks…" autocomplete="off"><button id="clearSearch" class="button secondary">Clear</button></div></div>
-      <p id="resultsStatus" class="results-status" role="status"></p>
+    <section id="catalog" class="catalog relative z-10 px-5 pb-16 group-[.browsing]:min-h-[75vh] group-[.browsing]:pt-28 md:px-8 lg:px-12" aria-label="Browse titles" tabindex="-1">
+      <div class="catalog-toolbar mb-6 flex flex-col justify-between gap-5 md:flex-row md:items-center"><div><p class="eyebrow mb-3 text-xs font-extrabold uppercase tracking-[0.2em] text-brand-red">YOUR NEXT BAD DECISION</p><h2 class="text-2xl font-bold tracking-tight md:text-3xl" id="catalogTitle">Seriously unserious cinema.</h2></div><label class="genre-label flex items-center gap-3 text-xs text-gray-400">Genre <select class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black rounded border border-white/30 bg-panel-dark px-3 py-2 text-white hover:border-white" id="genre"><option value="all">All genres</option><option>Action</option><option>Comedy</option><option>Adventure</option><option>Thriller</option><option>Animation</option></select></label></div>
+      <div id="searchPanel" class="search-panel mb-5 rounded-lg border border-white/20 bg-panel-dark p-5" hidden><label class="mb-3 block text-sm text-gray-300" for="searchInput">Find your next questionable favorite</label><div class="flex gap-3"><input class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black min-w-0 flex-1 rounded border border-gray-500 bg-screen-black p-3 text-white" id="searchInput" type="search" placeholder="Search titles, genres, or snacks…" autocomplete="off"><button type="button" id="clearSearch" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black button inline-flex items-center justify-center gap-2 rounded px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 motion-reduce:transform-none secondary bg-white/20 text-white hover:bg-white/30">Clear</button></div></div>
+      <p id="resultsStatus" class="results-status my-4 text-sm text-gray-400" role="status"></p>
       <div id="rows"></div>
       <noscript><p>Please enable JavaScript to browse all 28 titles and use previews and My List.</p></noscript>
     </section>
   </main>
-  <footer><a class="brand" href="#home">NOTFLIX</a><p>Questionable movies. Unquestionably good snacks.</p><p class="fine-print">Original parody artwork · School project · Not affiliated with Netflix.<br>Fictional titles. Previews are artwork demos, not full movies. My List is saved on this browser.</p><a href="#home">Back to top ↑</a></footer>
-  <dialog id="movieDialog" aria-labelledby="detailTitle"><button class="close-button" id="closeDialog" aria-label="Close movie details">×</button><div id="dialogContent"></div></dialog>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <footer class="border-t border-white/10 px-5 py-10 text-sm text-gray-400 md:px-8 lg:px-12 [&>p]:my-4 [&>a:hover]:text-white"><a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black brand text-3xl font-black tracking-tighter text-brand-red hover:text-red-400" href="#home">NOTFLIX</a><p>Questionable movies. Unquestionably good snacks.</p><p class="fine-print my-4 text-xs leading-relaxed text-gray-500">Original parody artwork · School project · Not affiliated with Netflix.<br>Fictional titles. Previews are artwork demos, not full movies. My List is saved on this browser.</p><a class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black" href="#home">Back to top ↑</a></footer>
+  <dialog class="m-auto max-h-[90vh] w-[94vw] max-w-3xl overflow-y-auto rounded-xl border border-white/20 bg-panel-dark p-0 text-white backdrop:bg-black/80 backdrop:backdrop-blur-sm" id="movieDialog" aria-labelledby="detailTitle"><button type="button" class="focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-screen-black close-button absolute right-4 top-4 z-10 h-10 w-10 rounded-full bg-black/80 text-3xl text-white hover:bg-black" id="closeDialog" aria-label="Close movie details">×</button><div id="dialogContent"><h2 id="detailTitle" class="sr-only">Movie details</h2></div></dialog>
+  <div id="toast" class="toast pointer-events-none fixed bottom-6 left-1/2 z-[100] max-w-[90vw] -translate-x-1/2 rounded-lg bg-white px-6 py-3 text-sm text-black opacity-0 shadow-xl transition [&.visible]:opacity-100" role="status" aria-live="polite"></div>
 </body>
 </html>
