@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NOTFLIX: questionable movies. Unquestionably good snacks. An original movie-parody class project.">
+  <title>NOTFLIX — Seriously unserious cinema</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0b0b'/%3E%3Ctext x='12' y='49' font-family='Arial' font-weight='900' font-size='48' fill='%23e50914'%3EN%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <script src="js/script.js?v=2" defer></script>
+</head>
+<body class="bg-black text-white">
+  <a class="skip-link" href="#catalog">Skip to movies</a>
+  <header>
+    <a class="brand" href="#home" aria-label="NOTFLIX home">NOTFLIX</a>
+    <nav id="navigation" aria-label="Main navigation">
+      <a href="#home">Home</a><a href="#movies">Movies</a><a href="#shows">Shows</a><a href="#my-list">My List <span id="listCount">0</span></a>
+    </nav>
+    <button class="search-toggle" id="searchButton" aria-label="Search titles">⌕ <span>Search</span></button>
+    <span class="avatar" title="Local demo profile">D</span>
+    <button id="menuButton" class="menu-button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navigation">☰</button>
+  </header>
+  <main>
+    <section class="hero" id="hero" aria-labelledby="heroTitle">
+      <img src="images/banners/no-weigh-home.jpg" alt="An unprepared rooftop hero with a pizza and an extremely questionable escape plan" fetchpriority="high">
+      <div class="hero-content">
+        <p class="eyebrow">N <span>A NOTFLIX ORIGINAL</span></p>
+        <h1 id="heroTitle">NO WEIGH<br>HOME</h1>
+        <div class="metadata"><span class="match">98% snack approval</span><span>2026</span><span class="rating">PG-13ish</span><span>Action comedy</span></div>
+        <p class="hero-description">He saved the last slice. Now he has to save himself. One extremely unprepared hero swings into a multiverse of delivery fees.</p>
+        <div class="actions"><button class="button primary" data-preview="no-weigh-home">▶ Play preview</button><button class="button secondary" data-info="no-weigh-home">ⓘ More info</button></div>
+        <p class="hero-note">Big movies. Small budgets. Absolutely no Oscars.</p>
+      </div>
+    </section>
+    <section id="catalog" class="catalog" aria-label="Browse titles" tabindex="-1">
+      <div class="catalog-toolbar"><div><p class="eyebrow">YOUR NEXT BAD DECISION</p><h2 id="catalogTitle">Seriously unserious cinema.</h2></div><label class="genre-label">Genre <select id="genre"><option value="all">All genres</option><option>Action</option><option>Comedy</option><option>Adventure</option><option>Thriller</option><option>Animation</option></select></label></div>
+      <div id="searchPanel" class="search-panel" hidden><label for="searchInput">Find your next questionable favorite</label><div><input id="searchInput" type="search" placeholder="Search titles, genres, or snacks…" autocomplete="off"><button id="clearSearch" class="button secondary">Clear</button></div></div>
+      <p id="resultsStatus" class="results-status" role="status"></p>
+      <div id="rows"></div>
+      <noscript><p>Please enable JavaScript to browse all 28 titles and use previews and My List.</p></noscript>
+    </section>
+  </main>
+  <footer><a class="brand" href="#home">NOTFLIX</a><p>Questionable movies. Unquestionably good snacks.</p><p class="fine-print">Original parody artwork · School project · Not affiliated with Netflix.<br>Fictional titles. Previews are artwork demos, not full movies. My List is saved on this browser.</p><a href="#home">Back to top ↑</a></footer>
+  <dialog id="movieDialog" aria-labelledby="detailTitle"><button class="close-button" id="closeDialog" aria-label="Close movie details">×</button><div id="dialogContent"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+// All titles and artwork are fictional parodies created for this class project.
+const movies = [
+  ['no-weigh-home','No Weigh Home','Action','Movie','One extremely unprepared rooftop hero must get home before his pizza gets cold. His greatest enemy? Delivery fees.'],
+  ['jurassic-parking','Jurassic Parking','Adventure','Movie','The dinosaurs are back. Unfortunately, they have taken every parking space. One attendant must validate humanity.'],
+  ['breadfather','The Breadfather','Comedy','Movie','A bakery boss makes an offer you cannot refuse: buy one sourdough, get one free. Betrayal has never been so crusty.'],
+  ['fast-curious','Fast & Slightly Curious','Action','Movie','They live life one quarter-mile at a time, mainly because nobody remembered to charge the car.'],
+  ['mission-probably','Mission: Probably Possible','Action','Movie','An elite agent faces his toughest assignment: assemble furniture without the instructions. Failure is very much an option.'],
+  ['breaking-bread','Breaking Bread','Comedy','Show','A mild-mannered baker enters the dangerous world of underground sourdough. Say his grain.'],
+  ['average-ers','The Average-ers','Action','Movie','Earth’s most available heroes assemble. Their powers include decent parking and remembering most passwords.'],
+  ['iron-deficiency-man','Iron Deficiency Man','Action','Movie','He built an incredible suit of armor. Now he just needs a nap and a reasonable amount of spinach.'],
+  ['captain-murica',"Captain 'Murica",'Action','Movie','Armed with a barbecue-lid shield, one backyard legend fights for liberty, justice, and extra ranch.'],
+  ['fatman-begins','Fatman Begins','Action','Movie','A new caped hero rises to defend the city, but first he must get his cape unstuck from the revolving door.'],
+  ['pretty-good-man','Pretty Good Man','Action','Movie','Not the hero we deserved. Not the hero we needed. But he was in the neighborhood and brought a ladder.'],
+  ['black-house-cat','Black House Cat','Adventure','Movie','A majestic ruler protects a mighty kingdom of couch cushions. The vacuum cleaner has other plans.'],
+  ['doctor-kinda-weird','Doctor Kinda Weird','Adventure','Movie','A bargain-bin sorcerer opens a portal to another dimension. It leads directly to the lost-and-found.'],
+  ['average-ers-midgame','Average-ers: Midgame','Action','Movie','Half the team disappears during halftime. The remaining heroes suspect a very long snack run.'],
+  ['pirates-cafeteria','Pirates of the Cafeteria','Adventure','Movie','A fearless crew sails the lunchroom in search of treasure: the one chicken nugget that actually looks like chicken.'],
+  ['that','That','Thriller','Movie','Something lurks in the storm drain. Nobody knows what it is, and nobody wants to be the person who checks.'],
+  ['room-temperature','Room Temperature','Thriller','Movie','In a house where nothing is hot or cold, one thermostat technician uncovers a chillingly mild secret.'],
+  ['down','Down','Animation','Movie','A balloon adventure goes in an unexpected direction after somebody buys the budget helium.'],
+  ['outside-in','Outside In','Animation','Movie','Five tiny emotions try to run one teenager’s brain. The group chat is not helping.'],
+  ['pretty-bad','Pretty Bad','Comedy','Movie','Two friends plan the greatest night of their lives. They make it to the wrong address at 8:15.'],
+  ['almost-adults','Almost Adults','Comedy','Movie','Old friends reunite to prove they have grown up. By lunchtime, somebody is stuck in a shopping cart.'],
+  ['last-nugget','The Last Chicken Nugget','Thriller','Movie','Six friends. One nugget. Zero willingness to split it. The dipping sauce knows too much.'],
+  ['dark-snack','The Dark Snack','Action','Movie','When the city’s snacks vanish, a midnight vigilante follows a trail of suspiciously orange fingerprints.'],
+  ['group-project','Attack of the Group Project','Thriller','Movie','The deadline is tonight. Three teammates are offline. One slide says “insert research here.” Based on your worst nightmare.'],
+  ['wifi-down','The WiFi Is Down','Thriller','Show','A family faces the unthinkable: talking to each other. Every episode brings them one step closer to restarting the router.'],
+  ['monday','Monday','Thriller','Show','The alarm rings. Again. An exhausted student suspects the weekend never actually happened.'],
+  ['charger',"Dude, Where's My Charger?",'Comedy','Movie','With 1% battery and zero leads, two friends begin a desperate investigation behind every couch cushion.'],
+  ['hallway-nine','Hallway 9','Thriller','Show','A mysterious school hallway appears only when you are already late. Every locker contains a slightly worse excuse.']
+].map(([slug,title,genre,type,description],i)=>({slug,title,genre,type,description,year:2026-i%3}));
+const $ = (selector) => document.querySelector(selector);
+const escapeHTML = (text) => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let saved;
+try { const value=JSON.parse(localStorage.getItem('notflix-my-list') || '[]'); saved=new Set(Array.isArray(value)?value.filter(slug=>movies.some(m=>m.slug===slug)):[]); } catch { saved=new Set(); }
+let route='home', query='', timer=null, toastTimer=null;
+const dialog=$('#movieDialog');
+function notify(message){ $('#toast').textContent=message; $('#toast').classList.add('visible'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2500); }
+function save(slug){
+  const m=movies.find(m=>m.slug===slug); if(!m)return;
+  if(saved.has(slug))saved.delete(slug);else saved.add(slug);
+  let persisted=true;try{localStorage.setItem('notflix-my-list',JSON.stringify([...saved]));}catch{persisted=false;}
+  render();
+  document.querySelectorAll('[data-save]').forEach(button=>{const added=saved.has(button.dataset.save);button.setAttribute('aria-pressed',String(added));button.setAttribute('aria-label',`${added?'Remove':'Add'} ${movies.find(m=>m.slug===button.dataset.save).title} ${added?'from':'to'} My List`);button.textContent=button.classList.contains('save-button')?(added?'✓':'+'):(added?'✓ In My List':'+ My List');});
+  notify(`${m.title} ${saved.has(slug)?'added to':'removed from'} My List.${persisted?'':' Saved for this visit only.'}`);
+}
+function card(m){const added=saved.has(m.slug);return `<article class="card"><button class="poster-button" data-info="${m.slug}" aria-label="More info about ${escapeHTML(m.title)}"><img src="images/posters/${m.slug}.jpg" alt="${escapeHTML(m.title)} original parody poster" loading="lazy" width="1024" height="1536"></button><div class="card-info"><div><h4 class="card-title">${escapeHTML(m.title)}</h4><p class="card-genre">${m.genre} · ${m.type}</p></div><button class="save-button" data-save="${m.slug}" aria-pressed="${added}" aria-label="${added?'Remove':'Add'} ${escapeHTML(m.title)} ${added?'from':'to'} My List">${added?'✓':'+'}</button></div></article>`;}
+function row(title,items,id,grid=false){return `<section class="row"><div class="row-heading"><h3>${title}</h3>${grid?'':`<div class="row-controls"><button class="arrow" data-scroll="${id}" data-direction="-1" aria-label="Scroll ${title} left">‹</button><button class="arrow" data-scroll="${id}" data-direction="1" aria-label="Scroll ${title} right">›</button></div>`}</div><div class="cards ${grid?'grid':''}" id="${id}">${items.map(card).join('')}</div></section>`;}
+function render(){
+  $('#listCount').textContent=saved.size;
+  const genre=$('#genre').value;
+  const filtered=movies.filter(m=>(route!=='movies'||m.type==='Movie')&&(route!=='shows'||m.type==='Show')&&(route!=='my-list'||saved.has(m.slug))&&(genre==='all'||m.genre===genre)&&(`${m.title} ${m.genre} ${m.description}`.toLowerCase().includes(query.toLowerCase())));
+  const browsing=route!=='home'||query||genre!=='all';
+  $('#hero').hidden=!!browsing;document.body.classList.toggle('browsing',!!browsing);
+  $('#catalogTitle').textContent=query?'Search results':({'home':'Seriously unserious cinema.','movies':'Movies worth losing sleep over.','shows':'One more questionable episode.','my-list':'Your excellent bad taste.'}[route]);
+  $('#resultsStatus').textContent=browsing?`${filtered.length} ${filtered.length===1?'title':'titles'}${query?` matching “${query}”`:''}`:'28 original parodies. Zero serious decisions.';
+  document.querySelectorAll('nav a').forEach(a=>{if(a.hash==='#'+route)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  if(!filtered.length){$('#rows').innerHTML=`<div class="empty"><h3>${route==='my-list'&&!query&&genre==='all'?'Your list is looking suspiciously responsible.':'No questionable cinema found.'}</h3><p>${route==='my-list'?'Tap + on a poster to save a title here.':'Try another title or clear your filters.'}</p><button class="button primary" id="resetBrowse">Browse all titles</button></div>`;return;}
+  if(browsing){$('#rows').innerHTML=row(route==='my-list'?'Saved for a snack-filled evening':'Find your next favorite',filtered,'all-titles',true);return;}
+  $('#rows').innerHTML=row('Trending for Absolutely No Reason',movies.slice(0,8),'trending')+row('Heroes with Questionable Qualifications',movies.filter(m=>m.genre==='Action'),'heroes')+row('Your Homework Can Wait',movies.filter(m=>['Comedy','Animation','Adventure'].includes(m.genre)),'comedy')+row('Mildly Terrifying. Deeply Relatable.',movies.filter(m=>m.genre==='Thriller'),'thrillers')+row('The Entire Questionable Collection',movies,'collection');
+}
+function navigate(){route=['home','movies','shows','my-list'].includes(location.hash.slice(1))?location.hash.slice(1):'home';query='';$('#searchInput').value='';$('#genre').value='all';$('#searchPanel').hidden=true;$('#navigation').classList.remove('open');$('#menuButton').setAttribute('aria-expanded','false');render();window.scrollTo({top:0,behavior:'instant'});}
+function showDialog(){if(!dialog.open)dialog.showModal();document.body.classList.add('modal-open');}
+function stopPreview(){clearInterval(timer);timer=null;}
+function details(slug){const m=movies.find(m=>m.slug===slug);if(!m)return;stopPreview();$('#dialogContent').innerHTML=`<div class="detail-art"><img src="images/banners/${m.slug}.jpg" alt="${escapeHTML(m.title)} cinematic scene"></div><div class="detail-body"><p class="eyebrow">A NOTFLIX ORIGINAL ${m.type.toUpperCase()}</p><h2 id="detailTitle">${escapeHTML(m.title)}</h2><div class="metadata"><span class="match">100% questionable</span><span>${m.year}</span><span>${m.genre}</span><span class="rating">Parody</span></div><div class="actions"><button class="button primary" data-preview="${m.slug}">▶ Play preview</button><button class="button secondary" data-save="${m.slug}" aria-pressed="${saved.has(m.slug)}">${saved.has(m.slug)?'✓ In My List':'+ My List'}</button></div><p>${escapeHTML(m.description)}</p><p class="demo-label">Original fictional title for a school project. Preview contains an animated artwork showcase, not a full movie.</p></div>`;showDialog();dialog.scrollTop=0;}
+function preview(slug){const m=movies.find(m=>m.slug===slug);if(!m)return;stopPreview();let elapsed=0,playing=true;const duration=24;const captions=[m.title,m.description,'Coming soon. Probably.','Only on NOTFLIX. Bring snacks.'];$('#dialogContent').innerHTML=`<div class="preview-stage" id="previewStage"><img src="images/banners/${m.slug}.jpg" alt="${escapeHTML(m.title)} preview artwork"><div class="preview-caption" id="caption"></div></div><div class="detail-body" style="margin-top:0;padding-top:24px"><h2 id="detailTitle">${escapeHTML(m.title)}</h2><p class="demo-label">ARTWORK PREVIEW · 24 SECONDS · NO AUDIO · CLASS PROJECT DEMO</p><div class="preview-controls"><button id="pausePreview" aria-label="Pause preview">Pause</button><input id="seekPreview" aria-label="Preview progress" type="range" min="0" max="24" value="0" step="0.1"><span id="previewTime">0:00 / 0:24</span></div><button class="button secondary" data-info="${m.slug}">← Back to details</button></div>`;
+  const update=()=>{$('#caption').textContent=captions[Math.min(3,Math.floor(elapsed/6))];$('#seekPreview').value=elapsed;$('#previewTime').textContent=`0:${String(Math.floor(elapsed)).padStart(2,'0')} / 0:24`;$('#previewStage').classList.toggle('paused',!playing);$('#pausePreview').textContent=elapsed>=duration?'Replay':playing?'Pause':'Play';$('#pausePreview').setAttribute('aria-label',elapsed>=duration?'Replay preview':playing?'Pause preview':'Play preview');};
+  $('#pausePreview').onclick=()=>{if(elapsed>=duration)elapsed=0;playing=!playing;update();};$('#seekPreview').oninput=e=>{elapsed=Number(e.target.value);if(elapsed>=duration)playing=false;update();};timer=setInterval(()=>{if(playing){elapsed=Math.min(duration,elapsed+.1);if(elapsed>=duration)playing=false;update();}},100);update();showDialog();dialog.scrollTop=0;
+}
+document.addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;if(button.dataset.info)details(button.dataset.info);if(button.dataset.preview)preview(button.dataset.preview);if(button.dataset.save)save(button.dataset.save);if(button.dataset.scroll){const strip=document.getElementById(button.dataset.scroll);strip.scrollBy({left:strip.clientWidth*.85*Number(button.dataset.direction),behavior:'smooth'});}if(button.id==='resetBrowse'){location.hash='home';navigate();}});
+$('#menuButton').onclick=()=>{const open=$('#navigation').classList.toggle('open');$('#menuButton').setAttribute('aria-expanded',String(open));};
+$('#searchButton').onclick=()=>{$('#searchPanel').hidden=false;$('#catalog').scrollIntoView();$('#searchInput').focus({preventScroll:true});};
+$('#searchInput').oninput=e=>{query=e.target.value.trim();render();};
+$('#clearSearch').onclick=()=>{query='';$('#searchInput').value='';$('#genre').value='all';render();$('#searchInput').focus();};
+$('#genre').onchange=render;
+$('#closeDialog').onclick=()=>dialog.close();
+dialog.addEventListener('close',()=>{stopPreview();document.body.classList.remove('modal-open');});
+dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
+document.addEventListener('click',event=>{const link=event.target.closest('a');if(link&&['#home','#movies','#shows','#my-list'].includes(link.hash)&&link.hash===location.hash){event.preventDefault();navigate();}});
+window.addEventListener('hashchange',()=>{if(location.hash!=='#catalog')navigate();});
+window.addEventListener('storage',event=>{if(event.key==='notflix-my-list'){try{const data=JSON.parse(event.newValue||'[]');saved=new Set(Array.isArray(data)?data.filter(slug=>movies.some(m=>m.slug===slug)):[]);render();}catch{}}});
+navigate();
